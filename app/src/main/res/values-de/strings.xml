@@ -59,5 +59,9 @@
     <string name="participate">Mitmachen</string>
     <string name="translate">Übersetzung der App auf Weblate</string>
     <string name="translation_help">Hilf uns bei der Übersetzung der App in deine Sprache auf weblate</string>
-    <string name="hide_note">Notiz verstecken</string>
+    <string name="hide_note">Notiz verstecken/anzeigen</string>
+    <string name="hide_note_notification">Diese Notiz wird in der Übersicht ausgeblendet und kann über das obere Menü wieder sichtbar gemacht werden.</string>
+    <string name="show_note_notification">Diese Notiz wird ganz normal in der Übersicht angezeigt.</string>
+    <string name="invisible">nicht sichtbar</string>
+    <string name="visible">sichtbar</string>
 </resources>

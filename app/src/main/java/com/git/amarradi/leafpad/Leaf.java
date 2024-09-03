@@ -56,6 +56,7 @@ public class Leaf {
         }
 
         Collections.reverse(notes);
+
         return notes;
     }
 
@@ -94,7 +95,7 @@ public class Leaf {
         editor.putString(BODY_PREFIX + note.getId(), note.getBody());
         editor.putString(ADDDATE + note.getId(), note.getDate());
         editor.putString(ADDTIME + note.getId(), note.getTime());
-        editor.putBoolean(HIDE_PREFIX + note.getId(), !note.isHide());
+        editor.putBoolean(HIDE_PREFIX + note.getId(), note.isHide());
         editor.apply();
     }
 

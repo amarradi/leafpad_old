@@ -67,8 +67,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 R.layout.note_list_item,
                 new String[]{"title", "date", "time", "state"},
                 new int[]{R.id.title_text, R.id.created_at, R.id.time_txt});
-
-        updateDataset();
+        updateDataset(false);
 
         listView = findViewById(R.id.note_list_view);
         listView.setAdapter(adapter);
@@ -131,8 +130,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     @Override
     protected void onResume() {
         super.onResume();
-
-        updateListView();
+        updateListView(false);
     }
 
     @Override
@@ -150,27 +148,30 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingsIntent);
                 break;
+            case R.id.item_show_hide:
+                updateDataset(true);
+                updateListView(true);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void updateListView() {
-        updateDataset();
+    public void updateListView(boolean invisible) {
+        updateDataset(invisible);
         ((SimpleAdapter) listView.getAdapter()).notifyDataSetChanged();
     }
 
 
-    public void updateDataset() {
+    public void updateDataset(boolean invisible) {
         notes = Leaf.loadAll(this);
-
         data.clear();
         for (Note note : notes) {
-                Map<String, String> datum = new HashMap<>();
-                datum.put("title", note.getTitle());
-                datum.put("body", note.getBody());
-                datum.put("date", note.getDate());
-                datum.put("time", note.getTime());
-                data.add(datum);
+            Map<String, String> datum = new HashMap<>();
+            datum.put("title", note.getTitle());
+            datum.put("body", note.getBody());
+            datum.put("date", note.getDate());
+            datum.put("time", note.getTime());
+            data.add(datum);
         }
     }
 }

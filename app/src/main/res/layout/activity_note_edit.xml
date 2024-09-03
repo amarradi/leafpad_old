@@ -5,8 +5,8 @@
     android:id="@+id/all"
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
-    android:animateLayoutChanges="true"
-    android:fitsSystemWindows="false"
+    android:animateLayoutChanges="false"
+    android:fitsSystemWindows="true"
     android:scrollbars="vertical"
     tools:context="com.git.amarradi.leafpad.NoteEditActivity">
 
@@ -32,13 +32,45 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-                <com.google.android.material.textfield.TextInputLayout
+            android:orientation="vertical"
+            android:baselineAligned="false"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_margin="@dimen/margin_about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/hide_notification"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:id="@+id/hide_btn"
+                    style="?attr/materialIconButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    app:icon="@drawable/action_hide" />
+
+
+            </LinearLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/default_text_input_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/marginTop_noteEdit"
+                    android:layout_marginBottom="@dimen/marginBottom_noteEdit">
+
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/title_edit"
@@ -47,24 +79,39 @@
                         android:gravity="top"
                         android:hint="@string/title_hint"
                         android:inputType="text|textCapSentences"
-                        android:maxLines="@integer/maxLines"/>
+                        android:maxLines="@integer/maxLines"
+                        android:paddingStart="@dimen/paddingStartEnd_noteEdit"
+                        android:paddingEnd="@dimen/paddingStartEnd_noteEdit"
+                        android:textColorHint="@color/seed"
+                        tools:ignore="VisualLintTextFieldSize" />
+
                 </com.google.android.material.textfield.TextInputLayout>
+
+
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:scrollbars="vertical|horizontal"
+                android:layout_marginTop="@dimen/marginTop_noteEdit"
+                android:layout_marginBottom="@dimen/marginBottom_noteEdit">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/body_edit"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
+                    android:autoLink="all"
                     android:ems="5"
                     android:gravity="top"
                     android:hint="@string/body_hint"
-                    android:autoLink="all"
+                    android:inputType="textMultiLine|textCapSentences|textWebEmailAddress|textAutoCorrect|textPersonName|textUri"
                     android:linksClickable="true"
-                    android:inputType="textMultiLine|textCapSentences|textWebEmailAddress|textAutoCorrect|textPersonName|textUri" />
+                    android:paddingStart="@dimen/paddingStartEnd_noteEdit"
+                    android:paddingEnd="@dimen/paddingStartEnd_noteEdit"
+                    android:textColorHint="#616161"
+                    tools:ignore="VisualLintTextFieldSize" />
             </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -5,15 +5,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.util.Objects;
 
@@ -21,9 +26,12 @@ public class NoteEditActivity extends AppCompatActivity {
 
     private EditText titleEdit;
     private EditText bodyEdit;
+    private Button hide_btn;
+    private MaterialTextView hide_notification;
     private Note note;
     private MaterialToolbar toolbar;
     private Resources resources;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +49,18 @@ public class NoteEditActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
 
+        coordinatorLayout = findViewById(R.id.all);
         titleEdit = findViewById(R.id.title_edit);
-
         bodyEdit = findViewById(R.id.body_edit);
-
+        hide_btn = findViewById(R.id.hide_btn);
+        hide_notification = findViewById(R.id.hide_notification);
         String noteId = intent.getStringExtra(MainActivity.EXTRA_NOTE_ID);
-
         note = Leaf.load(this, noteId);
+        if (note.isHide()) {
+            hide_notification.setText(resources.getString(R.string.hide_note_notification));
+        } else {
+            hide_notification.setText(resources.getString(R.string.show_note_notification));
+        }
         if (isNewEntry(note, intent)) {
             note = Leaf.load(this, Note.makeId());
             //new note
@@ -68,12 +81,19 @@ public class NoteEditActivity extends AppCompatActivity {
 
         } else {
             //existing note
-
             toolbar.setTitle(R.string.action_fab_note);
-            toolbar.setSubtitle(note.getTitle());
+            if (note.isHide()) {
+                toolbar.setSubtitle(note.getTitle());
+            } else {
+                toolbar.setSubtitle(note.getTitle());
+            }
             titleEdit.setText(note.getTitle());
             bodyEdit.setText(note.getBody());
         }
+
+        hide_btn.setOnClickListener(v -> {
+            setHidetoNote();
+        });
     }
 
     private boolean isNewEntry(Note note, Intent intent) {
@@ -138,7 +158,7 @@ public class NoteEditActivity extends AppCompatActivity {
             case R.id.action_save:
                 note.setTitle(titleEdit.getText().toString());
                 note.setBody(bodyEdit.getText().toString());
-                note.setHide(true);
+                note.setHide(note.isHide());
                 if (note.getBody().isEmpty() && note.getTitle().isEmpty()) {
                     //don't save empty notes
                     Leaf.remove(this, note);
@@ -148,8 +168,32 @@ public class NoteEditActivity extends AppCompatActivity {
                     Toast.makeText(this, note.getTitle() + " " + resources.getString(R.string.action_note_saved), Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case R.id.action_hide_note:
+                    setHidetoNote();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setHidetoNote() {
+        Log.d("isHide", "setHidetoNote: "+note.isHide());
+        if (note.isHide()) {
+            note.setHide(false);
+            hide_notification.setText(resources.getString(R.string.show_note_notification));
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout,resources.getText(R.string.visible), Snackbar.LENGTH_LONG);
+            snackbar.show();
+            Leaf.set(this, note);
+        } else {
+            note.setHide(true);
+            hide_notification.setText(resources.getString(R.string.hide_note_notification));
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout,resources.getText(R.string.invisible), Snackbar.LENGTH_LONG);
+            snackbar.show();
+            Leaf.set(this, note);
+        }
+
+
     }
 
     private void removeNote() {

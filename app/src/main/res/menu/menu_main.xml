@@ -9,10 +9,18 @@
         android:title="@string/hide_note"
         app:showAsAction="ifRoom"/> -->
     <item
+    android:id="@+id/item_show_hide"
+    android:icon="@drawable/action_hide"
+    android:title="@string/list_hidden_notes"
+    app:showAsAction="ifRoom"
+    />
+    <item
         android:id="@+id/item_settings"
         android:icon="@drawable/action_setting"
         android:title="@string/menu_settings"
         app:showAsAction="ifRoom" />
+
+
 
 
 </menu>
